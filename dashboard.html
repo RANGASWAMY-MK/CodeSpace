@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamCollab - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">🚀 TeamCollab</div>
+        <div class="user-info">
+            <span id="userName">Welcome</span>
+            <button id="logoutBtn" class="btn-logout">Logout</button>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="messages">💬 Messages</button>
+        <button class="tab-btn" data-tab="code">💻 Code Snippets</button>
+        <button class="tab-btn" data-tab="files">📁 Files</button>
+    </nav>
+
+    <!-- Messages Section -->
+    <section id="messages" class="tab-content active">
+        <div class="section-header">
+            <h2>Team Messages</h2>
+            <button id="refreshMessages" class="btn-refresh">🔄 Refresh</button>
+        </div>
+        
+        <div id="messagesList" class="messages-list">
+            <!-- Messages will load here -->
+        </div>
+        
+        <div class="message-input">
+            <textarea id="messageText" placeholder="Type your message..." rows="3"></textarea>
+            <button id="sendMessage" class="btn-primary">Send Message</button>
+        </div>
+    </section>
+
+    <!-- Code Snippets Section -->
+    <section id="code" class="tab-content">
+        <div class="section-header">
+            <h2>Code Snippets</h2>
+            <button id="refreshCode" class="btn-refresh">🔄 Refresh</button>
+        </div>
+        
+        <div class="code-form">
+            <input type="text" id="codeTitle" placeholder="Snippet Title">
+            <select id="codeLanguage">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="sql">SQL</option>
+                <option value="php">PHP</option>
+            </select>
+            <textarea id="codeContent" placeholder="Paste your code here..." rows="8"></textarea>
+            <button id="addCode" class="btn-primary">Share Code</button>
+        </div>
+        
+        <div id="codeList" class="code-list">
+            <!-- Code snippets will load here -->
+        </div>
+    </section>
+
+    <!-- Files Section -->
+    <section id="files" class="tab-content">
+        <div class="section-header">
+            <h2>Shared Files</h2>
+            <button id="refreshFiles" class="btn-refresh">🔄 Refresh</button>
+        </div>
+        
+        <div class="file-upload">
+            <input type="file" id="fileInput">
+            <button id="uploadFile" class="btn-primary">Upload File</button>
+        </div>
+        
+        <div id="filesList" class="files-list">
+            <!-- Files will load here -->
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

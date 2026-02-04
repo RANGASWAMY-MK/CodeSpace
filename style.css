@@ -1,474 +1,570 @@
 /* ============ RESET & BASE ============ */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    min-height: 100vh;
-    color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh;
+  color: #fff;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ============ LOGIN PAGE ============ */
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .login-box {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 40px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.5s ease forwards;
 }
 
 .login-box h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
 .subtitle {
-    text-align: center;
-    color: #aaa;
-    margin-bottom: 30px;
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 30px;
 }
 
 .input-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .input-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #ccc;
+  display: block;
+  margin-bottom: 8px;
+  color: #ccc;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 16px;
-}
-
-.input-group input::placeholder {
-    color: #888;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s;
 }
 
 .input-group input:focus {
-    outline: 2px solid #4facfe;
+  outline: 2px solid #4facfe;
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
 }
 
 #loginBtn {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 #loginBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+  animation: pulse 1s infinite;
 }
 
 .error-msg {
-    color: #ff6b6b;
-    text-align: center;
-    margin-top: 15px;
+  color: #ff6b6b;
+  text-align: center;
+  margin-top: 15px;
 }
 
 /* ============ HEADER ============ */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
-    background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .btn-logout {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 20px;
-    background: #ff6b6b;
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.3s;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #ff6b6b;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .btn-logout:hover {
-    background: #ee5a5a;
+  background: #ee5a5a;
+  transform: translateY(-2px);
 }
 
 /* ============ TABS ============ */
 .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  flex-wrap: wrap;
 }
 
 .tab-btn {
-    padding: 12px 30px;
-    border: none;
-    border-radius: 25px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .tab-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .tab-btn.active {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
 }
 
 /* ============ TAB CONTENT ============ */
 .tab-content {
-    display: none;
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
+  display: none;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeInUp 0.5s ease;
 }
 
 .tab-content.active {
-    display: block;
+  display: block;
 }
 
 .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .btn-refresh {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    cursor: pointer;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-refresh:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(180deg);
 }
 
 .btn-primary {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.3s;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+  animation: pulse 1s infinite;
 }
 
 /* ============ MESSAGES ============ */
 .messages-list {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 20px;
-    max-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
 }
 
 .message-item {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.message-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
 }
 
 .message-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 .message-sender {
-    font-weight: bold;
-    color: #4facfe;
+  font-weight: bold;
+  color: #4facfe;
 }
 
 .message-time {
-    font-size: 12px;
-    color: #888;
+  font-size: 12px;
+  color: #888;
 }
 
 .message-text {
-    color: #ddd;
-    line-height: 1.5;
+  color: #ddd;
+  line-height: 1.5;
 }
 
 .message-input {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .message-input textarea {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 16px;
-    resize: vertical;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  resize: vertical;
+  transition: all 0.3s;
+}
+
+.message-input textarea:focus {
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
 }
 
 /* ============ CODE SNIPPETS ============ */
 .code-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .code-form input,
 .code-form select,
 .code-form textarea {
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 16px;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.code-form input:focus,
+.code-form select:focus,
+.code-form textarea:focus {
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
 }
 
 .code-form textarea {
-    font-family: 'Courier New', monospace;
-    resize: vertical;
+  font-family: 'Courier New', monospace;
+  resize: vertical;
 }
 
 .code-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .code-item {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.code-item:hover {
+  box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
 }
 
 .code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .code-title {
-    font-weight: bold;
-    color: #4facfe;
+  font-weight: bold;
+  color: #4facfe;
 }
 
 .code-meta {
-    display: flex;
-    gap: 15px;
-    align-items: center;
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 .code-language {
-    background: #4facfe;
-    padding: 3px 10px;
-    border-radius: 10px;
-    font-size: 12px;
+  background: #4facfe;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 12px;
 }
 
 .code-body {
-    padding: 0;
+  padding: 0;
 }
 
 .code-body pre {
-    margin: 0;
-    padding: 20px;
-    overflow-x: auto;
+  margin: 0;
+  padding: 20px;
+  overflow-x: auto;
 }
 
 .code-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background: rgba(0, 0, 0, 0.2);
-    font-size: 12px;
-    color: #888;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  color: #888;
 }
 
 .btn-delete {
-    padding: 5px 15px;
-    border: none;
-    border-radius: 5px;
-    background: #ff6b6b;
-    color: #fff;
-    cursor: pointer;
-    font-size: 12px;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  background: #ff6b6b;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+}
+
+.btn-delete:hover {
+  background: #ee5a5a;
 }
 
 .btn-copy {
-    padding: 5px 15px;
-    border: none;
-    border-radius: 5px;
-    background: #4facfe;
-    color: #fff;
-    cursor: pointer;
-    font-size: 12px;
-    margin-right: 10px;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  background: #4facfe;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 10px;
+  transition: all 0.3s;
+}
+
+.btn-copy:hover {
+  background: #3e9ae5;
 }
 
 /* ============ FILES ============ */
 .file-upload {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .file-upload input[type="file"] {
-    flex: 1;
-    padding: 15px;
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
+  flex: 1;
+  padding: 15px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.file-upload input[type="file"]:hover {
+  border-color: #4facfe;
 }
 
 .files-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
 }
 
 .file-item {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.file-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(79, 172, 254, 0.2);
 }
 
 .file-icon {
-    font-size: 40px;
-    margin-bottom: 10px;
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
 .file-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-    word-break: break-all;
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-break: break-all;
 }
 
 .file-info {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 15px;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 15px;
 }
 
 .file-actions {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .btn-download {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    background: #4facfe;
-    color: #fff;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 14px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  background: #4facfe;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.btn-download:hover {
+  background: #3e9ae5;
 }
 
 /* ============ LOADING ============ */
 .loading-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 1000;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1000;
 }
 
 .loading-overlay.active {
-    display: flex;
+  display: flex;
 }
 
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #4facfe;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #4facfe;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 /* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .tab-content {
+    padding: 10px;
+  }
+
+  .files-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 600px) {
-    .header {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .tabs {
-        flex-direction: column;
-    }
-    
-    .tab-btn {
-        width: 100%;
-    }
-    
-    .file-upload {
-        flex-direction: column;
-    }
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab-btn {
+    width: 100%;
+  }
+
+  .file-upload {
+    flex-direction: column;
+  }
+
+  .message-input {
+    flex-direction: column;
+  }
 }

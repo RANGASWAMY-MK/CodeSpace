@@ -22,13 +22,8 @@
     .container { width: 100%; max-width: 1000px; }
     .hidden { display: none !important; }
     
-    /* Login Screen */
-    #login-view { max-width: 400px; margin: 10vh auto; background: var(--surface); padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-    #login-view h2 { margin-bottom: 1.5rem; text-align: center; }
-    
-    /* Dashboard */
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-    .btn { background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 500; }
+    .btn { background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.2s; }
     .btn:hover { background: var(--primary-hover); }
     .btn-danger { background: var(--danger); }
     
@@ -38,7 +33,7 @@
     
     /* Modal Form */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
-    .modal-content { background: var(--surface); padding: 2rem; border-radius: 8px; width: 500px; max-width: 90%; }
+    .modal-content { background: var(--surface); padding: 2rem; border-radius: 8px; width: 500px; max-width: 90%; max-height: 90vh; overflow-y: auto; }
     .form-group { margin-bottom: 1rem; display: flex; flex-direction: column; }
     .form-group label { margin-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; }
     .form-group input, .form-group select { padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; }
@@ -47,31 +42,13 @@
 </head>
 <body>
 
-  <div id="login-view" class="container">
-    <h2>Admin Login</h2>
-    <form id="login-form">
-      <div class="form-group">
-        <label>Author ID</label>
-        <input type="text" id="auth-id" required>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="auth-pass" required>
-      </div>
-      <button type="submit" class="btn" style="width: 100%">Login</button>
-      <p id="login-error" style="color: var(--danger); margin-top: 1rem; font-size: 0.875rem;"></p>
-    </form>
-  </div>
-
-  <div id="dashboard-view" class="container hidden">
+  <div id="dashboard-view" class="container">
     <header>
       <div>
         <h2>Test Engine Database</h2>
-        <p>Logged in as: <span id="user-display"></span></p>
       </div>
       <div>
         <button class="btn" onclick="openModal()">+ Add Question</button>
-        <button class="btn btn-danger" onclick="logout()" style="margin-left: 10px;">Logout</button>
       </div>
     </header>
     
@@ -81,6 +58,7 @@
           <th>Subject</th>
           <th>Question</th>
           <th>Correct Ans</th>
+          <th>Author</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -91,9 +69,10 @@
 
   <div id="crud-modal" class="modal-overlay hidden">
     <div class="modal-content">
-      <h3 id="modal-title">Add Question</h3>
+      <h3 id="modal-title" style="margin-bottom: 1.5rem;">Add Question</h3>
       <form id="crud-form">
         <input type="hidden" id="q-id">
+        <div class="form-group"><label>Author Name</label><input type="text" id="q-author" placeholder="E.g., John Doe" required></div>
         <div class="form-group"><label>Subject</label><input type="text" id="q-subject" required></div>
         <div class="form-group"><label>Question</label><input type="text" id="q-text" required></div>
         <div class="form-group"><label>Option A</label><input type="text" id="q-optA" required></div>
@@ -121,77 +100,50 @@
     // --- JAVASCRIPT LOGIC ---
 
     // PASTE YOUR APPS SCRIPT WEB APP URL HERE:
-    const API_URL = "https://script.google.com/macros/s/AKfycbyQRR5vHYsMEDltPkT11S-Z3GFFpZxy9YSqjz2-odHiAlP7g5pa06WwpMYC8gXFDnbI/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbwd8mYqgXFbAv_KLKr-DsgDaclzHwo0qHxplmiL9-UJAJKUYhrlf474jZg5NP5U_Urb/exec"; 
     
-    let currentUser = null;
     let questionsData = [];
 
     // --- DOM Elements ---
-    const loginView = document.getElementById('login-view');
-    const dashboardView = document.getElementById('dashboard-view');
-    const loginForm = document.getElementById('login-form');
     const crudModal = document.getElementById('crud-modal');
     const crudForm = document.getElementById('crud-form');
     const tableBody = document.querySelector('#questions-table tbody');
 
-    // --- Auth Logic ---
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const id = document.getElementById('auth-id').value;
-      const pass = document.getElementById('auth-pass').value;
-      const btn = e.target.querySelector('button');
-      
-      btn.innerText = "Authenticating...";
-      
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'login', payload: { authorId: id, password: pass } })
-        });
-        const data = await res.json();
-        
-        if (data.status === 'success') {
-          currentUser = data.user;
-          document.getElementById('user-display').innerText = currentUser.authorName;
-          loginView.classList.add('hidden');
-          dashboardView.classList.remove('hidden');
-          loadData();
-        } else {
-          document.getElementById('login-error').innerText = data.message;
-        }
-      } catch (err) {
-        document.getElementById('login-error').innerText = "Network Error.";
-      } finally {
-        btn.innerText = "Login";
-      }
-    });
-
-    function logout() {
-      currentUser = null;
-      dashboardView.classList.add('hidden');
-      loginView.classList.remove('hidden');
-      document.getElementById('login-form').reset();
-    }
+    // Auto-load data on page start
+    window.onload = loadData;
 
     // --- Data Fetching & Rendering ---
     async function loadData() {
-      tableBody.innerHTML = "<tr><td colspan='4'>Loading data...</td></tr>";
-      const res = await fetch(API_URL);
-      const json = await res.json();
-      questionsData = json.data || [];
-      renderTable();
+      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Loading database...</td></tr>";
+      try {
+        const res = await fetch(API_URL);
+        const json = await res.json();
+        questionsData = json.data || [];
+        renderTable();
+      } catch (err) {
+        tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: red;'>Failed to load data. Check API URL.</td></tr>";
+      }
     }
 
     function renderTable() {
       tableBody.innerHTML = "";
+      if (questionsData.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>No questions found. Add one!</td></tr>";
+        return;
+      }
+      
       questionsData.forEach(q => {
         const row = document.createElement('tr');
+        // Prevent JS errors if correct answer field is somehow blank
+        const correctAnswerText = q[q.correctAnswer] || "Not Set"; 
+        
         row.innerHTML = `
-          <td>${q.subject}</td>
-          <td>${q.question}</td>
-          <td>${q[q.correctAnswer]}</td>
+          <td>${q.subject || ""}</td>
+          <td>${q.question || ""}</td>
+          <td>${correctAnswerText}</td>
+          <td>${q.author || "Unknown"}</td>
           <td>
-            <button onclick="editQuestion('${q.id}')" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Edit</button>
+            <button onclick="editQuestion('${q.id}')" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin-right: 5px;">Edit</button>
             <button onclick="deleteQuestion('${q.id}')" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Delete</button>
           </td>
         `;
@@ -207,16 +159,22 @@
       
       if (id) {
         const q = questionsData.find(x => x.id === id);
-        document.getElementById('q-subject').value = q.subject;
-        document.getElementById('q-text').value = q.question;
-        document.getElementById('q-optA').value = q.optionA;
-        document.getElementById('q-optB').value = q.optionB;
-        document.getElementById('q-optC').value = q.optionC;
-        document.getElementById('q-optD').value = q.optionD;
-        document.getElementById('q-correct').value = q.correctAnswer;
+        if (q) {
+          document.getElementById('q-author').value = q.author || "";
+          document.getElementById('q-subject').value = q.subject || "";
+          document.getElementById('q-text').value = q.question || "";
+          document.getElementById('q-optA').value = q.optionA || "";
+          document.getElementById('q-optB').value = q.optionB || "";
+          document.getElementById('q-optC').value = q.optionC || "";
+          document.getElementById('q-optD').value = q.optionD || "";
+          document.getElementById('q-correct').value = q.correctAnswer || "optionA";
+        }
       }
       crudModal.classList.remove('hidden');
     }
+
+    // Explicit binding to help the inline HTML call
+    window.editQuestion = openModal;
 
     function closeModal() {
       crudModal.classList.add('hidden');
@@ -229,39 +187,47 @@
       
       const payload = {
         id: id || undefined,
+        author: document.getElementById('q-author').value,
         subject: document.getElementById('q-subject').value,
         question: document.getElementById('q-text').value,
         optionA: document.getElementById('q-optA').value,
         optionB: document.getElementById('q-optB').value,
         optionC: document.getElementById('q-optC').value,
         optionD: document.getElementById('q-optD').value,
-        correctAnswer: document.getElementById('q-correct').value,
-        author: currentUser.authorName // Automatically attach logged-in author
+        correctAnswer: document.getElementById('q-correct').value
       };
 
       closeModal();
-      tableBody.innerHTML = "<tr><td colspan='4'>Saving...</td></tr>";
+      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Saving to database...</td></tr>";
 
-      await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action, payload })
-      });
-      
-      loadData(); // Refresh table
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action, payload })
+        });
+        loadData(); // Refresh table on success
+      } catch (err) {
+        alert("Failed to save data. Please try again.");
+        loadData(); // Restore table view
+      }
     });
 
     // --- Delete Handling ---
-    async function deleteQuestion(id) {
+    window.deleteQuestion = async function(id) {
       if (!confirm("Are you sure you want to delete this question?")) return;
       
-      tableBody.innerHTML = "<tr><td colspan='4'>Deleting...</td></tr>";
-      await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'delete', payload: { id } })
-      });
-      
-      loadData(); // Refresh table
-    }
+      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Deleting record...</td></tr>";
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'delete', payload: { id } })
+        });
+        loadData(); // Refresh table
+      } catch (err) {
+        alert("Failed to delete record.");
+        loadData();
+      }
+    };
   </script>
 </body>
 </html>

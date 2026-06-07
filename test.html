@@ -5,81 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mock Test Admin Engine</title>
   <style>
-    /* --- CSS DESIGN SYSTEM --- */
+    /* --- MODERN & RESPONSIVE CSS --- */
     :root {
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
-      --bg: #f3f4f6;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --text: #1f2937;
-      --border: #e5e7eb;
-      --danger: #dc2626;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --radius: 8px;
     }
     
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); padding: 2rem; display: flex; justify-content: center; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
     
-    .container { width: 100%; max-width: 1000px; }
+    body { background-color: var(--bg); color: var(--text); line-height: 1.5; padding: 1.5rem 1rem; }
+    
+    .container { width: 100%; max-width: 1000px; margin: 0 auto; }
     .hidden { display: none !important; }
     
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-    .btn { background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.2s; }
+    /* Header & Buttons */
+    header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.5rem; font-weight: 600; }
+    
+    .btn { background: var(--primary); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: var(--radius); cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: background 0.2s ease; white-space: nowrap; }
     .btn:hover { background: var(--primary-hover); }
     .btn-danger { background: var(--danger); }
+    .btn-danger:hover { background: var(--danger-hover); }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; margin-right: 0.25rem; }
     
-    table { width: 100%; border-collapse: collapse; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
-    th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-    th { background: #f9fafb; font-weight: 600; }
+    /* Responsive Table Container */
+    .table-wrapper { background: var(--surface); border-radius: var(--radius); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); }
+    table { width: 100%; min-width: 650px; border-collapse: collapse; text-align: left; }
+    th, td { padding: 1rem; border-bottom: 1px solid var(--border); }
+    th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+    td { font-size: 0.95rem; }
+    tr:last-child td { border-bottom: none; }
     
-    /* Modal Form */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
-    .modal-content { background: var(--surface); padding: 2rem; border-radius: 8px; width: 500px; max-width: 90%; max-height: 90vh; overflow-y: auto; }
-    .form-group { margin-bottom: 1rem; display: flex; flex-direction: column; }
-    .form-group label { margin-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; }
-    .form-group input, .form-group select { padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; }
-    .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
+    /* Responsive Modal using CSS Grid */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); display: flex; justify-content: center; align-items: center; padding: 1rem; z-index: 50; }
+    .modal-content { background: var(--surface); padding: 1.5rem; border-radius: var(--radius); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .modal-header h3 { font-size: 1.25rem; }
+    
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .full-width { grid-column: 1 / -1; }
+    
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+    .form-group input, .form-group select { padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+    
+    .modal-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 2rem; grid-column: 1 / -1; }
+
+    /* Mobile Adjustments */
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; } /* Stack inputs on mobile */
+      header { flex-direction: column; align-items: flex-start; }
+      .btn { width: 100%; text-align: center; } /* Full width buttons on mobile */
+    }
   </style>
 </head>
 <body>
 
-  <div id="dashboard-view" class="container">
+  <div class="container">
     <header>
-      <div>
-        <h2>Test Engine Database</h2>
-      </div>
-      <div>
-        <button class="btn" onclick="openModal()">+ Add Question</button>
-      </div>
+      <h2>Mock Test Engine</h2>
+      <button class="btn" onclick="openModal()">+ Add Question</button>
     </header>
     
-    <table id="questions-table">
-      <thead>
-        <tr>
-          <th>Subject</th>
-          <th>Question</th>
-          <th>Correct Ans</th>
-          <th>Author</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table id="questions-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Question</th>
+            <th>Correct Ans</th>
+            <th>Author</th>
+            <th style="width: 150px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tbody>
+      </table>
+    </div>
   </div>
 
   <div id="crud-modal" class="modal-overlay hidden">
     <div class="modal-content">
-      <h3 id="modal-title" style="margin-bottom: 1.5rem;">Add Question</h3>
-      <form id="crud-form">
+      <div class="modal-header">
+        <h3 id="modal-title">Add Question</h3>
+      </div>
+      
+      <form id="crud-form" class="form-grid">
         <input type="hidden" id="q-id">
-        <div class="form-group"><label>Author Name</label><input type="text" id="q-author" placeholder="E.g., John Doe" required></div>
-        <div class="form-group"><label>Subject</label><input type="text" id="q-subject" required></div>
-        <div class="form-group"><label>Question</label><input type="text" id="q-text" required></div>
+        
+        <div class="form-group full-width">
+          <label>Question Text</label>
+          <input type="text" id="q-text" placeholder="e.g., What is the capital of France?" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" id="q-subject" placeholder="e.g., Geography" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Author Name</label>
+          <input type="text" id="q-author" placeholder="e.g., Jane Doe" required>
+        </div>
+
         <div class="form-group"><label>Option A</label><input type="text" id="q-optA" required></div>
         <div class="form-group"><label>Option B</label><input type="text" id="q-optB" required></div>
         <div class="form-group"><label>Option C</label><input type="text" id="q-optC" required></div>
         <div class="form-group"><label>Option D</label><input type="text" id="q-optD" required></div>
-        <div class="form-group">
+        
+        <div class="form-group full-width">
           <label>Correct Answer</label>
           <select id="q-correct" required>
             <option value="optionA">Option A</option>
@@ -88,9 +131,10 @@
             <option value="optionD">Option D</option>
           </select>
         </div>
+
         <div class="modal-actions">
-          <button type="button" class="btn" style="background: gray;" onclick="closeModal()">Cancel</button>
-          <button type="submit" class="btn">Save</button>
+          <button type="button" class="btn" style="background: var(--text-muted);" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn">Save Question</button>
         </div>
       </form>
     </div>
@@ -104,54 +148,49 @@
     
     let questionsData = [];
 
-    // --- DOM Elements ---
     const crudModal = document.getElementById('crud-modal');
     const crudForm = document.getElementById('crud-form');
     const tableBody = document.querySelector('#questions-table tbody');
 
-    // Auto-load data on page start
     window.onload = loadData;
 
-    // --- Data Fetching & Rendering ---
     async function loadData() {
-      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Loading database...</td></tr>";
+      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; padding: 2rem;'>Loading database...</td></tr>";
       try {
         const res = await fetch(API_URL);
         const json = await res.json();
         questionsData = json.data || [];
         renderTable();
       } catch (err) {
-        tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: red;'>Failed to load data. Check API URL.</td></tr>";
+        tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: var(--danger); padding: 2rem;'>Failed to load data. Check API URL.</td></tr>";
       }
     }
 
     function renderTable() {
       tableBody.innerHTML = "";
       if (questionsData.length === 0) {
-        tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>No questions found. Add one!</td></tr>";
+        tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; padding: 2rem;'>No questions found. Add one!</td></tr>";
         return;
       }
       
       questionsData.forEach(q => {
         const row = document.createElement('tr');
-        // Prevent JS errors if correct answer field is somehow blank
         const correctAnswerText = q[q.correctAnswer] || "Not Set"; 
         
         row.innerHTML = `
-          <td>${q.subject || ""}</td>
-          <td>${q.question || ""}</td>
-          <td>${correctAnswerText}</td>
+          <td><strong>${q.subject || "-"}</strong></td>
+          <td>${q.question || "-"}</td>
+          <td style="color: var(--primary); font-weight: 500;">${correctAnswerText}</td>
           <td>${q.author || "Unknown"}</td>
           <td>
-            <button onclick="editQuestion('${q.id}')" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin-right: 5px;">Edit</button>
-            <button onclick="deleteQuestion('${q.id}')" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Delete</button>
+            <button onclick="editQuestion('${q.id}')" class="btn btn-sm">Edit</button>
+            <button onclick="deleteQuestion('${q.id}')" class="btn btn-danger btn-sm">Delete</button>
           </td>
         `;
         tableBody.appendChild(row);
       });
     }
 
-    // --- CRUD Form Handling ---
     function openModal(id = null) {
       crudForm.reset();
       document.getElementById('q-id').value = id || "";
@@ -173,7 +212,6 @@
       crudModal.classList.remove('hidden');
     }
 
-    // Explicit binding to help the inline HTML call
     window.editQuestion = openModal;
 
     function closeModal() {
@@ -198,31 +236,30 @@
       };
 
       closeModal();
-      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Saving to database...</td></tr>";
+      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; padding: 2rem;'>Saving to database...</td></tr>";
 
       try {
         await fetch(API_URL, {
           method: 'POST',
           body: JSON.stringify({ action, payload })
         });
-        loadData(); // Refresh table on success
+        loadData(); 
       } catch (err) {
         alert("Failed to save data. Please try again.");
-        loadData(); // Restore table view
+        loadData(); 
       }
     });
 
-    // --- Delete Handling ---
     window.deleteQuestion = async function(id) {
       if (!confirm("Are you sure you want to delete this question?")) return;
       
-      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Deleting record...</td></tr>";
+      tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center; padding: 2rem;'>Deleting record...</td></tr>";
       try {
         await fetch(API_URL, {
           method: 'POST',
           body: JSON.stringify({ action: 'delete', payload: { id } })
         });
-        loadData(); // Refresh table
+        loadData(); 
       } catch (err) {
         alert("Failed to delete record.");
         loadData();
